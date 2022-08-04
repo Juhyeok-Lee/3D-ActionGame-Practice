@@ -12,8 +12,8 @@ public class CameraController : MonoBehaviour
     public Transform cam;
     public float camSpeed;  // 카메라 회전 속도.
 
-    float mouseX;   // 마우스의 x축 이동값.
-    float mouseY;   // 마우스의 y축 이동값.
+    [HideInInspector] public float mouseX;   // 마우스의 x축 이동값.
+    [HideInInspector] public float mouseY;   // 마우스의 y축 이동값.
     float wheel;      // 마우스의 휠 이동값.      
 
     void Move()
