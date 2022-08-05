@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public Transform playerAxis;
     public Transform player;
     public float playerSpeed;
-    Vector3 movement;    // 플레이어의 이동 방향.
+    [HideInInspector] public Vector3 movement;    // 플레이어의 이동 방향.
 
     void PlayerMove()
     {
@@ -57,6 +57,9 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        PlayerMove();
+        if (!player.GetComponent<Animator>().GetBool("isAttack"))
+        {
+            PlayerMove();
+        }         
     }
 }
