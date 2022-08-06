@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour
         if (wheel <= -10) wheel = -10;
 
         // 카메라의 로컬포지션(카메라 축 기준)에서 z값을 바꿔줌.
-        cam.localPosition = new Vector3(0, 0, wheel);
+        cam.localPosition = new Vector3(0, 5, wheel);
     }
 
     void Start()

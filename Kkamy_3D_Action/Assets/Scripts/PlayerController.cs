@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // 움직이는 동시에 공격을 할 수 없게 isAttack으로 이동 제어하기.
+    public PlayerAttack playerAttack;
+
     // 플레이어 오브젝트를 움직이는 컴포넌트 제작.
 
     /** 플레이어가 움직일 때 오브젝트 회전을 카메라 회전과 맞추기 위해
@@ -50,14 +53,13 @@ public class PlayerController : MonoBehaviour
             player.GetComponent<Animator>().SetBool("isMove", false);
         }
 
-        // 카메라 중심 축이 플레이어보다 조금 위를 따라다니도록 함.
-        camController.cam_CentralAxis.position =
-            player.position + new Vector3(0, 4f, 0);
+        // 카메라 중심 축이 플레이어 포지션을 따라다니도록 함.
+        camController.cam_CentralAxis.position = player.position;
     }
     
     void Update()
     {
-        if (!player.GetComponent<Animator>().GetBool("isAttack"))
+        if (!playerAttack.isAttack)
         {
             PlayerMove();
         }         

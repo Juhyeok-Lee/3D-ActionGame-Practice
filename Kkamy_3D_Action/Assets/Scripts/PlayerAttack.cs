@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
-{ 
-    // 공격 애니메이션을 실행하기 전에 플레이어 중심축을 카메라 중심축과 맞춤.
+{
+    /** 공격 애니메이션을 실행하기 전에 플레이어 중심축을 카메라 중심축과 맞춤. 
+     * 카메라 오브젝트는 x축 회전이 있지만, 플레이어 오브젝트는 x축 회전을 사용하지 않을 것이므로 y축 회전 값만을 대입해야 함.
+     * 플레이어 중심축은 Move가 발생할 때에만 카메라 중심축과 맞춰지고 움직일 때 회전하는 것은 플레이어 오브젝트임. 
+     * 따라서 플레이어의 로컬 회전이 아닌 월드 회전을 맞춰줘야 함.
+     * 공격 방향이 즉각적으로 회전해야 하므로 보간을 사용하여 자연스럽게 회전하는 것이 아닌, 부자연스럽더라도 즉시 회전해야 함.
+     * 따라서 공격 애니메이션이 실행되기 전에 플레이어 오브젝트의 forward에 카메라 축이 바라보는 y축 회전을 대입할 예정. */
+    public Transform camAxis;       // 카메라 중심축의 forward를 가져오기 위해 변수를 선언.
 
     // 콤보 시스템을 구현하기 위한 변수들.    
-    Animator playerAnim;    // 플레이어의 애니메이터.
-
-    public int comboStep;    // 콤보 진행 단계.
-    bool comboPossible;      // 콤보 가능 여부 표시.    
-    bool inputSmash;          // 스매쉬 키의 입력 여부.
+    Animator playerAnim;    // 플레이어의 애니메이터.    
+    bool comboPossible;     // 콤보 가능 여부 표시.    
+    bool inputSmash;        // 스매쉬 키의 입력 여부.
+    [HideInInspector] public int comboStep;    // 콤보 진행 단계.
+    [HideInInspector] public bool isAttack;    // 공격 애니메이션을 수행중일 때, true
     
     void Start()
     {
         playerAnim = gameObject.GetComponent<Animator>();
+        isAttack = false;   // 초기화.
     }
 
     // 콤보의 시작점. 콤보를 가능하게 함.
@@ -31,11 +38,14 @@ public class PlayerAttack : MonoBehaviour
         if (!inputSmash)
         {
             if (comboStep == 2)
-            {                
+            {
+                // forward는 현재 오브젝트가 바라보는 방향의 방향벡터를 리턴한다. 따라서 y값을 제외하고 x,z값만을 전달함.
+                transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
                 playerAnim.Play("Knight_NormalAtk_B");
             }
             if (comboStep == 3)
-            {                
+            {
+                transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
                 playerAnim.Play("Knight_NormalAtk_C");
             }
         }
@@ -43,15 +53,18 @@ public class PlayerAttack : MonoBehaviour
         if (inputSmash)
         {
             if (comboStep == 1)
-            {                
+            {
+                transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
                 playerAnim.Play("Knight_SmashAtk_A");
             }
             if (comboStep == 2)
-            {               
+            {
+                transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
                 playerAnim.Play("Knight_SmashAtk_B");
             }
             if (comboStep == 3)
-            {                
+            {
+                transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
                 playerAnim.Play("Knight_SmashAtk_C");
             }
         }
@@ -64,16 +77,18 @@ public class PlayerAttack : MonoBehaviour
         inputSmash = false;
         comboStep = 0;
 
-        playerAnim.SetBool("isAttack", false);
+        isAttack = false;   // 모든 공격 애니메이션이 끝나면 isAttack = false;
     }
 
     void NormalAttack()
     {
-        playerAnim.SetBool("isAttack", true);        
+        // 공격이 시작될 때 isAttack = true;
+        isAttack = true;       
 
         // 콤보스텝이 0이라면 첫번째 기본 공격을 사용.
         if (comboStep == 0)
-        {            
+        {   
+            transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
             playerAnim.Play("Knight_NormalAtk_A");
             comboStep++;
             return;
