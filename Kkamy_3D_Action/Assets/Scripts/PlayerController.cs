@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
             playerAxis.Translate(movement * Time.deltaTime * playerSpeed);
 
             /* Slerp 메소드는 플레이어의 현재 회전으로부터,
-             * 목표 방향(movement가 가리키는 방향)으로 회전하는 쿼터니언을 반환한다.
+             * 목표 방향(movement가 가리키는 방향) 사이의 회전을 반환한다.
              * RotateTowards와 달리 보간을 사용하여 자연스러운 회전을 구현한다.
              * movement는 벡터3이므로 쿼터니언으로 변환하였다.*/
             player.localRotation = Quaternion.Slerp(player.localRotation, 

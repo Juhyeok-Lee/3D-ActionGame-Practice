@@ -29,6 +29,7 @@ public class Col_PlayerAtk : MonoBehaviour
         {
             // 어떤 공격 타입인지, 콤보스텝이 몇인지 표시.
             dmg = string.Format("{0} +{1}", type_Atk, comboStep);
+            
             dmgText.text = dmg;
             dmgText.gameObject.SetActive(true);
 
