@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Golem_AI : MonoBehaviour
-{
+{    
     Animator golemAni;          // 골렘의 애니메이터를 제어하기 위한 변수.
     public Transform target;    // 타겟(플레이어)의 트랜스폼.
     public float golemSpeed;   // 골렘의 이동속도.
@@ -11,7 +11,7 @@ public class Golem_AI : MonoBehaviour
     int atkStep;                     // 공격단게.
 
     private void Start()
-    {
+    {        
         golemAni = GetComponent<Animator>();
         enableAct = true;
     }
@@ -34,7 +34,7 @@ public class Golem_AI : MonoBehaviour
         {
             golemAni.SetBool("Walk", true);
             transform.Translate(Vector3.forward * golemSpeed
-                * Time.deltaTime, Space.Self);
+                * Time.deltaTime, Space.Self);            
         }
 
         if ((target.position - transform.position).magnitude < 10)
@@ -84,5 +84,5 @@ public class Golem_AI : MonoBehaviour
             RotateGolem();
             MoveGolem();
         }
-    }
+    }    
 }
