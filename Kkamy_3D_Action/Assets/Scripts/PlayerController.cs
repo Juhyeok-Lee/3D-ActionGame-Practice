@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{
-    // 움직이는 동시에 공격을 할 수 없게 isAttack으로 이동 제어하기.
-    public PlayerAttack playerAttack;
-
+{    
     // 플레이어 오브젝트를 움직이는 컴포넌트 제작.
 
     /** 플레이어가 움직일 때 오브젝트 회전을 카메라 회전과 맞추기 위해
@@ -17,7 +14,14 @@ public class PlayerController : MonoBehaviour
     public Transform playerAxis;
     public Transform player;
     public float playerSpeed;
+
     [HideInInspector] public Vector3 movement;    // 플레이어의 이동 방향.
+    [HideInInspector] public bool enableAct;      // 플레이어의 이동 가능 여부를 표시.
+
+    private void Awake()
+    {
+        enableAct = true;
+    }
 
     void PlayerMove()
     {
@@ -59,7 +63,8 @@ public class PlayerController : MonoBehaviour
     
     void Update()
     {
-        if (!playerAttack.isAttack)
+        // 공격, 패리, 경직 상태일 땐 이동을 못하게 함.
+        if (enableAct)
         {
             PlayerMove();
         }         

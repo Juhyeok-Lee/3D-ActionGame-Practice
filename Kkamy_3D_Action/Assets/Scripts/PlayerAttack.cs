@@ -17,12 +17,18 @@ public class PlayerAttack : MonoBehaviour
     bool comboPossible;     // 콤보 가능 여부 표시.    
     bool inputSmash;        // 스매쉬 키의 입력 여부.
     [HideInInspector] public int comboStep;    // 콤보 진행 단계.
-    [HideInInspector] public bool isAttack;    // 공격 애니메이션을 수행중일 때, true
-    
+
+    // Freeze와 UnFreeze를 사용하기 위해 enableAct를 받아오고자 선언함.
+    public PlayerController playerController;
+    // 패리 중일 때, 플레이어의 히트박스 태그를 변경하기 위해 선언함.
+    public GameObject playerHitBox;
+
+    bool isParry;       // 패리, 카운터 동작 중일 때는 공격을 할 수 없음.
+
     void Start()
     {
         playerAnim = gameObject.GetComponent<Animator>();
-        isAttack = false;   // 초기화.
+        isParry = false;
     }
 
     // 콤보의 시작점. 콤보를 가능하게 함.
@@ -76,18 +82,13 @@ public class PlayerAttack : MonoBehaviour
         comboPossible = false;
         inputSmash = false;
         comboStep = 0;
-
-        isAttack = false;   // 모든 공격 애니메이션이 끝나면 isAttack = false;
     }
 
     void NormalAttack()
     {
-        // 공격이 시작될 때 isAttack = true;
-        isAttack = true;       
-
         // 콤보스텝이 0이라면 첫번째 기본 공격을 사용.
         if (comboStep == 0)
-        {   
+        {
             transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
             playerAnim.Play("Knight_NormalAtk_A");
             comboStep++;
@@ -111,11 +112,47 @@ public class PlayerAttack : MonoBehaviour
             inputSmash = true;       // 스매쉬 키가 눌렸다는 것을 알려줌.
         }
     }
-    
+
     void Update()
     {
-        // 왼쪽 마우스 클릭은 노멀 어택, 오른쪽 마우스 클릭은 스매쉬 어택.
-        if (Input.GetMouseButtonDown(0)) NormalAttack();
-        if(Input.GetMouseButtonDown(1)) SmashAttack();
+        if (!isParry)
+        {
+            // 왼쪽 마우스 클릭은 노멀 어택, 오른쪽 마우스 클릭은 스매쉬 어택.
+            if (Input.GetMouseButtonDown(0)) NormalAttack();
+            if (Input.GetMouseButtonDown(1)) SmashAttack();
+        }
+
+        // 다른 동작 중이 아닐 때, 왼쪽 컨트롤 키를 눌렀을 때 패리를 사용.
+        if (playerController.enableAct)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                isParry = true;
+                playerAnim.Play("Knight_Parry");
+            }
+        }
+    }
+
+    // 플레이어가 특정 동작을 실행 중에는 이동할 수 없도록 함.
+    // 동작이 끝나면 UnFreeze하여 움직일 수 있음.
+    void FreezePlayer()
+    {
+    playerController.enableAct = false;
+    }
+
+    void UnFreezePlayer()
+    {
+    playerController.enableAct = true;
+    }
+
+    void ResetParry()
+    {
+    isParry = false;
+    }
+
+    void ChangeTag(string t)
+    {
+    playerHitBox.tag = t;
     }
 }
+

@@ -9,7 +9,8 @@ public class GolemSound : MonoBehaviour
     public AudioClip walk;
     public AudioClip swingA;
     public AudioClip swingB;
-    
+    public AudioClip appear;
+
     void Start()
     {
         playAudio = GetComponent<AudioSource>();
@@ -30,6 +31,12 @@ public class GolemSound : MonoBehaviour
     void SwingB()
     {
         playAudio.clip = swingB;
+        playAudio.Play();
+    }
+
+    void Appear()
+    {
+        playAudio.clip = appear;
         playAudio.Play();
     }
 }

@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - HitBox_Enemy
+  - Col_EnemyAtk
+  - HitBox_Player
+  - Col_PlayerAtk
+  - Parry
   layers:
   - Default
   - TransparentFX

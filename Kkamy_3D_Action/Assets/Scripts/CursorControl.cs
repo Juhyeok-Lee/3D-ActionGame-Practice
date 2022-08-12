@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CursorControl : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // 평소에는 마우스 커서가 보이지 않고, 위치가 고정됨.
+    // 왼쪽 alt 버튼을 누르고 있을 때만 마우스 커서가 보임.
+    
     void Start()
     {
         Cursor.visible = false;

@@ -1181,7 +1181,8 @@ AnimationClip:
         time: 1.2083334
         value: {x: 0.88092995, y: 0.00000007414895, z: -0.00000010234257, w: 0.4732467}
         inSlope: {x: 0.026430154, y: -0.000000009977052, z: -0.0000000051265703, w: -0.050009295}
-        outSlope: {x: 0.026430154, y: -0.000000009977052, z: -0.0000000051265703, w: -0.050009295}
+        outSlope: {x: 0.026430154, y: -0.000000009977052, z: -0.0000000051265703,
+          w: -0.050009295}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334, w: 0.33333334}
@@ -19530,4 +19531,18 @@ AnimationClip:
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: FreezeGolem
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.625
+    functionName: UnFreezeGolem
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

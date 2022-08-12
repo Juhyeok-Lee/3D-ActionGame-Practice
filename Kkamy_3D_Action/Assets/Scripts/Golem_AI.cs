@@ -27,17 +27,17 @@ public class Golem_AI : MonoBehaviour
             Quaternion.LookRotation(dir), 5 * Time.deltaTime);
     }
 
-    // 타겟과 자신이 10 이상 떨어져 있을 때만 이동.
+    // 타겟과 자신이 6 이상 떨어져 있을 때만 이동.
     void MoveGolem()
     {
-        if ((target.position - transform.position).magnitude >= 10)
+        if ((target.position - transform.position).magnitude >= 6)
         {
             golemAni.SetBool("Walk", true);
             transform.Translate(Vector3.forward * golemSpeed
                 * Time.deltaTime, Space.Self);            
         }
 
-        if ((target.position - transform.position).magnitude < 10)
+        if ((target.position - transform.position).magnitude < 6)
         {
             golemAni.SetBool("Walk", false);
         }
@@ -51,11 +51,11 @@ public class Golem_AI : MonoBehaviour
             switch (atkStep)
             {
                 case 0:
-                    atkStep++;
+                    atkStep = Random.Range(1, 3);
                     golemAni.Play("Golem_AtkA");
                     break; 
                 case 1:
-                    atkStep++;
+                    atkStep = 0;
                     golemAni.Play("Golem_AtkB");
                     break;
                 case 2:
@@ -78,7 +78,7 @@ public class Golem_AI : MonoBehaviour
     }
 
     private void Update()
-    {
+    {        
         if (enableAct)
         {
             RotateGolem();

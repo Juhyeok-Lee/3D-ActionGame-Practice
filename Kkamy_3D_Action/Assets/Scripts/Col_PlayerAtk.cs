@@ -8,12 +8,20 @@ public class Col_PlayerAtk : MonoBehaviour
     public Animator playerAnim;
     public CameraShake camShake;    
 
+    // 플레이어가 적을 공격했을 때 타격음을 발생시킴.
+    private AudioSource atkSound;
+
     public PlayerAttack playerAtk;
     public string type_Atk; // 공격 타입. 노멀/스매쉬.
 
     int comboStep;
     public string dmg; // 데미지를 문자열로 바꾸어 출력할 예정.
     public TextMeshProUGUI dmgText;
+
+    private void Awake()
+    {
+        atkSound = GetComponent<AudioSource>();
+    }
 
     private void OnEnable()
     {
@@ -27,8 +35,16 @@ public class Col_PlayerAtk : MonoBehaviour
         // 본래 태그 비교를 ==로 했으나 CompareTag를 이용하도록 바꿈.
         if (other.CompareTag("HitBox_Enemy"))
         {
+            // 충돌 발생 시 타격음을 재생함.
+            atkSound.Play();
+
             // 어떤 공격 타입인지, 콤보스텝이 몇인지 표시.
             dmg = string.Format("{0} +{1}", type_Atk, comboStep);
+
+            if (comboStep == 0)
+            {
+                dmg = "Counter!";
+            }
             
             dmgText.text = dmg;
             dmgText.gameObject.SetActive(true);

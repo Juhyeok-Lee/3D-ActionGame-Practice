@@ -38,8 +38,8 @@ public class CameraController : MonoBehaviour
     {
         wheel += Input.GetAxis("Mouse ScrollWheel") * 10;
 
-        if (wheel >= -4) wheel = -4;
-        if (wheel <= -10) wheel = -10;
+        if (wheel >= -6) wheel = -6;
+        if (wheel <= -12) wheel = -12;
 
         // 카메라의 로컬포지션(카메라 축 기준)에서 z값을 바꿔줌.
         cam.localPosition = new Vector3(0, 5, wheel);
@@ -47,7 +47,8 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        wheel = -7f;
+        // 카메라와 플레이어 사이의 거리, 카메라의 x축 회전을 게임이 실행됐을 때 기본값으로 맞춰줌.
+        wheel = -10f;
         mouseY = 1f;
     }
         
