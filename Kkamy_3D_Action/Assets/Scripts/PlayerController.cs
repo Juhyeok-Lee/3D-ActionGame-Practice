@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
     /** 플레이어가 움직일 때 오브젝트 회전을 카메라 회전과 맞추기 위해
      * 캠의 회전축을 가져오기 위해 컴포넌트 선언. */
-    public CameraController camController;
+    public CameraController camController;    
 
     [Header("Player")]
     public Transform playerAxis;
@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public Vector3 movement;    // 플레이어의 이동 방향.
     [HideInInspector] public bool enableAct;      // 플레이어의 이동 가능 여부를 표시.
+
+    public FixedJoystick playerJoysitck;    // 조이스틱 입력을 받아옴.
 
     private void Awake()
     {
@@ -27,8 +29,8 @@ public class PlayerController : MonoBehaviour
     {
         /** 키보드 입력을 감지하여 플레이어의 이동 방향을 결정.
          * x, z값은 -1과 1 사이의 값으로 결정됨. */
-        movement = new Vector3(Input.GetAxis("Horizontal"), 0, 
-            Input.GetAxis("Vertical"));
+        movement = new Vector3(playerJoysitck.Horizontal, 0,
+            playerJoysitck.Vertical);
 
         // 무브먼트가 영벡터가 아닐 때 캐릭터 이동. (키보드 입력이 있을 때.)
         if (movement != Vector3.zero)
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
             // 플레이어 축의 회전을 카메라 회전과 맞춰줌. x축, z축 회전은 없음.
             playerAxis.rotation = Quaternion.Euler(new Vector3(
                 0, camController.cam_CentralAxis.rotation.y + 
-                camController.mouseX, 0) * camController.camSpeed);
+                camController.rotateX, 0) * camController.camSpeed);
 
             // Translate 함수를 이용해 movement 방향으로 플레이어 축을 움직임.
             playerAxis.Translate(movement * Time.deltaTime * playerSpeed);

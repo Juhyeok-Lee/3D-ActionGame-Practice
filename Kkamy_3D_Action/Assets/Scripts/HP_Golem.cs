@@ -10,7 +10,7 @@ public class HP_Golem : MonoBehaviour
 
     public Image hpBar_Front;
     public GameObject hpBar;
-
+    public GameObject stageClear;
     public Animator golemAni;
     AudioSource golemHit;
 
@@ -34,7 +34,8 @@ public class HP_Golem : MonoBehaviour
             hpCurrent = 0f;
             golemAni.Play("Golem_Rigidity");
             golemHit.Play();
-            StartCoroutine("Die");
+            stageClear.SetActive(true);
+            StartCoroutine("Die");            
         }
     }
 

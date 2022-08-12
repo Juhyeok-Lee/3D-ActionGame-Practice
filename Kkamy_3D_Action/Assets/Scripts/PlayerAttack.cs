@@ -30,14 +30,11 @@ public class PlayerAttack : MonoBehaviour
         playerAnim = gameObject.GetComponent<Animator>();
         isParry = false;
     }
-
-    // 콤보의 시작점. 콤보를 가능하게 함.
+    
     public void ComboPossible()
     {
         comboPossible = true;
-    }
-
-    // 입력 키와 콤보 단계에 따라 다음 동작을 재생하는 기능.
+    }   // 콤보의 시작점. 콤보를 가능하게 함.
     public void NextAtk()
     {
         // 다음 공격이 스매쉬가 아니라면. (일반 공격이라면)
@@ -74,82 +71,66 @@ public class PlayerAttack : MonoBehaviour
                 playerAnim.Play("Knight_SmashAtk_C");
             }
         }
-    }
-
-    // 콤보 단계를 다시 처음으로 초기화시키는 기능.
+    }    // 입력 키와 콤보 단계에 따라 다음 동작을 재생하는 기능.
     public void ResetCombo()
     {
         comboPossible = false;
         inputSmash = false;
         comboStep = 0;
-    }
-
-    void NormalAttack()
+    }   // 콤보 단계를 다시 처음으로 초기화시키는 기능.
+    public void NormalAttack()
     {
-        // 콤보스텝이 0이라면 첫번째 기본 공격을 사용.
-        if (comboStep == 0)
+        if (!isParry)
         {
-            transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
-            playerAnim.Play("Knight_NormalAtk_A");
-            comboStep++;
-            return;
-        }
-        if (comboStep != 0)
+            // 콤보스텝이 0이라면 첫번째 기본 공격을 사용.
+            if (comboStep == 0)
+            {
+                transform.forward = new Vector3(camAxis.forward.x, 0, camAxis.forward.z);
+                playerAnim.Play("Knight_NormalAtk_A");
+                comboStep++;
+                return;
+            }
+            if (comboStep != 0)
+            {
+                if (comboPossible)
+                {
+                    comboPossible = false;  // 막 눌렀을 때, 무차별 입력을 방지.
+                    comboStep++;
+                }
+            }
+        }        
+    }
+    public void SmashAttack()
+    {
+        if (!isParry)
         {
             if (comboPossible)
             {
                 comboPossible = false;  // 막 눌렀을 때, 무차별 입력을 방지.
-                comboStep++;
+                inputSmash = true;       // 스매쉬 키가 눌렸다는 것을 알려줌.
             }
-        }
+        }        
     }
-
-    void SmashAttack()
+    public void Parry()
     {
-        if (comboPossible)
-        {
-            comboPossible = false;  // 막 눌렀을 때, 무차별 입력을 방지.
-            inputSmash = true;       // 스매쉬 키가 눌렸다는 것을 알려줌.
-        }
-    }
-
-    void Update()
-    {
-        if (!isParry)
-        {
-            // 왼쪽 마우스 클릭은 노멀 어택, 오른쪽 마우스 클릭은 스매쉬 어택.
-            if (Input.GetMouseButtonDown(0)) NormalAttack();
-            if (Input.GetMouseButtonDown(1)) SmashAttack();
-        }
-
-        // 다른 동작 중이 아닐 때, 왼쪽 컨트롤 키를 눌렀을 때 패리를 사용.
         if (playerController.enableAct)
         {
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                isParry = true;
-                playerAnim.Play("Knight_Parry");
-            }
+            isParry = true;
+            playerAnim.Play("Knight_Parry");
         }
-    }
-
-    // 플레이어가 특정 동작을 실행 중에는 이동할 수 없도록 함.
-    // 동작이 끝나면 UnFreeze하여 움직일 수 있음.
-    void FreezePlayer()
+    }       
+    void FreezePlayer()     // 플레이어가 특정 동작을 실행 중에는 이동할 수 없도록 함.
     {
     playerController.enableAct = false;
     }
-
-    void UnFreezePlayer()
+    void UnFreezePlayer()   // 동작이 끝나면 UnFreeze하여 움직일 수 있음.
     {
     playerController.enableAct = true;
     }
-
     void ResetParry()
     {
     isParry = false;
     }
-
     void ChangeTag(string t)
     {
     playerHitBox.tag = t;
